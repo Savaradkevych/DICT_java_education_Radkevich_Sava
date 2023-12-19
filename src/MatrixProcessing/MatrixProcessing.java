@@ -4,20 +4,16 @@ public class MatrixProcessing {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Введіть матрицю A:");
-        int[][] matrixA = readMatrix(scanner);
+        System.out.println("Введіть матрицю:");
+        int[][] matrix = readMatrix(scanner);
 
-        System.out.println("Введіть матрицю B:");
-        int[][] matrixB = readMatrix(scanner);
+        System.out.println("Введіть константу:");
+        int constant = scanner.nextInt();
 
-        // Перевірка можливості додавання матриць
-        if (canAddMatrices(matrixA, matrixB)) {
-            int[][] resultMatrix = addMatrices(matrixA, matrixB);
-            System.out.println("Результат додавання матриць:");
-            printMatrix(resultMatrix);
-        } else {
-            System.out.println("ERROR: Неможливо додати матриці, оскільки вони мають різні розміри.");
-        }
+        int[][] resultMatrix = multiplyMatrixByConstant(matrix, constant);
+
+        System.out.println("Результат множення матриці на константу:");
+        printMatrix(resultMatrix);
     }
 
     private static int[][] readMatrix(Scanner scanner) {
@@ -35,20 +31,15 @@ public class MatrixProcessing {
         return matrix;
     }
 
-    private static boolean canAddMatrices(int[][] matrixA, int[][] matrixB) {
-        // Перевірка можливості додавання матриць
-        return matrixA.length == matrixB.length && matrixA[0].length == matrixB[0].length;
-    }
-
-    private static int[][] addMatrices(int[][] matrixA, int[][] matrixB) {
-        // Функція для додавання двох матриць
-        int rows = matrixA.length;
-        int cols = matrixA[0].length;
+    private static int[][] multiplyMatrixByConstant(int[][] matrix, int constant) {
+        // Функція для множення матриці на константу
+        int rows = matrix.length;
+        int cols = matrix[0].length;
         int[][] resultMatrix = new int[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                resultMatrix[i][j] = matrixA[i][j] + matrixB[i][j];
+                resultMatrix[i][j] = matrix[i][j] * constant;
             }
         }
 
