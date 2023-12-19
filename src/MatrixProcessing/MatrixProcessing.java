@@ -20,6 +20,9 @@ public class MatrixProcessing {
                 case 3:
                     multiplyMatrices(scanner);
                     break;
+                case 4:
+                    transposeMatrix(scanner);
+                    break;
                 case 0:
                     System.out.println("Exiting the program.");
                     break;
@@ -30,15 +33,14 @@ public class MatrixProcessing {
     }
 
     private static void printMenu() {
-        // Функція для виведення меню
         System.out.println("1. Add matrices");
         System.out.println("2. Multiply matrix by a constant");
         System.out.println("3. Multiply matrices");
+        System.out.println("4. Transpose matrix");
         System.out.println("0. Exit");
     }
 
     private static int[][] readMatrix(Scanner scanner) {
-        // Функція для зчитування матриці
         int rows = scanner.nextInt();
         int cols = scanner.nextInt();
         int[][] matrix = new int[rows][cols];
@@ -65,7 +67,6 @@ public class MatrixProcessing {
         System.out.println("Enter second matrix:");
         printMatrix(matrixB);
 
-        // Перевірка можливості додавання матриць
         if (matrixA.length == matrixB.length && matrixA[0].length == matrixB[0].length) {
             int[][] resultMatrix = addMatrices(matrixA, matrixB);
             System.out.println("The result is:");
@@ -104,7 +105,6 @@ public class MatrixProcessing {
         System.out.println("Enter second matrix:");
         printMatrix(matrixB);
 
-        // Перевірка можливості множення матриць
         if (matrixA[0].length == matrixB.length) {
             int[][] resultMatrix = multiplyMatrices(matrixA, matrixB);
             System.out.println("The result is:");
@@ -114,8 +114,45 @@ public class MatrixProcessing {
         }
     }
 
+    private static void transposeMatrix(Scanner scanner) {
+        System.out.println("1. Main diagonal");
+        System.out.println("2. Side diagonal");
+        System.out.println("3. Vertical line");
+        System.out.println("4. Horizontal line");
+        System.out.print("Your choice: > ");
+        int transposeChoice = scanner.nextInt();
+
+        System.out.println("Enter matrix size: > ");
+        int[][] matrix = readMatrix(scanner);
+
+        System.out.println("Enter matrix:");
+        printMatrix(matrix);
+
+        int[][] resultMatrix;
+
+        switch (transposeChoice) {
+            case 1:
+                resultMatrix = transposeMainDiagonal(matrix);
+                break;
+            case 2:
+                resultMatrix = transposeSideDiagonal(matrix);
+                break;
+            case 3:
+                resultMatrix = transposeVerticalLine(matrix);
+                break;
+            case 4:
+                resultMatrix = transposeHorizontalLine(matrix);
+                break;
+            default:
+                System.out.println("Invalid choice for transpose.");
+                return;
+        }
+
+        System.out.println("The result is:");
+        printMatrix(resultMatrix);
+    }
+
     private static int[][] addMatrices(int[][] matrixA, int[][] matrixB) {
-        // Функція для додавання двох матриць
         int rows = matrixA.length;
         int cols = matrixA[0].length;
         int[][] resultMatrix = new int[rows][cols];
@@ -130,7 +167,6 @@ public class MatrixProcessing {
     }
 
     private static int[][] multiplyMatrixByConstant(int[][] matrix, int constant) {
-        // Функція для множення матриці на константу
         int rows = matrix.length;
         int cols = matrix[0].length;
         int[][] resultMatrix = new int[rows][cols];
@@ -145,7 +181,6 @@ public class MatrixProcessing {
     }
 
     private static int[][] multiplyMatrices(int[][] matrixA, int[][] matrixB) {
-        // Функція для множення двох матриць
         int rowsA = matrixA.length;
         int colsA = matrixA[0].length;
         int colsB = matrixB[0].length;
@@ -162,8 +197,63 @@ public class MatrixProcessing {
         return resultMatrix;
     }
 
+    private static int[][] transposeMainDiagonal(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] resultMatrix = new int[cols][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                resultMatrix[j][i] = matrix[i][j];
+            }
+        }
+
+        return resultMatrix;
+    }
+
+    private static int[][] transposeSideDiagonal(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] resultMatrix = new int[cols][rows];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                resultMatrix[cols - j - 1][rows - i - 1] = matrix[i][j];
+            }
+        }
+
+        return resultMatrix;
+    }
+
+    private static int[][] transposeVerticalLine(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] resultMatrix = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                resultMatrix[i][cols - j - 1] = matrix[i][j];
+            }
+        }
+
+        return resultMatrix;
+    }
+
+    private static int[][] transposeHorizontalLine(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] resultMatrix = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                resultMatrix[rows - i - 1][j] = matrix[i][j];
+            }
+        }
+
+        return resultMatrix;
+    }
+
     private static void printMatrix(int[][] matrix) {
-        // Функція для виведення матриці
         for (int[] row : matrix) {
             for (int value : row) {
                 System.out.print(value + " ");
