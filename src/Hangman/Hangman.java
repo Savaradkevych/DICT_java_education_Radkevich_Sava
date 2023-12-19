@@ -3,15 +3,25 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Hangman {
+public class Hangman{
     public static void main(String[] args) {
         System.out.println("HANGMAN");
-        System.out.println("The game will be available soon.");
-        System.out.println("\nWelcome to Hangman! Can you guess the word and survive?");
-        System.out.println("Stay tuned for the game release!");
+        System.out.println("Type \"play\" to play the game, \"exit\" to quit:");
+        Scanner scanner = new Scanner(System.in);
 
-        // Етап 7: Гра з вгадуванням літер, обмеженням кількості помилок і валідацією вводу
-        playHangmanWithValidation();
+        while (true) {
+            System.out.print("> ");
+            String choice = scanner.next().toLowerCase();
+
+            if (choice.equals("play")) {
+                playHangmanWithValidation();
+            } else if (choice.equals("exit")) {
+                System.out.println("Thanks for playing! Goodbye!");
+                break;
+            } else {
+                System.out.println("Invalid choice. Type \"play\" to play the game, \"exit\" to quit.");
+            }
+        }
     }
 
     public static void playHangmanWithValidation() {
