@@ -18,6 +18,7 @@ public class ChatBot {
         askForName();
         guessAge();
         countToNumber();
+        runProgrammingTest();
     }
 
     // Метод для запитання імені користувача
@@ -70,11 +71,44 @@ public class ChatBot {
         }
     }
 
+    // Метод для проведення тесту з програмування
+    private void runProgrammingTest() {
+        System.out.println("Let's test your programming knowledge.");
+        System.out.println("Why do we use methods in programming?");
+        System.out.println("1. To repeat a statement multiple times.");
+        System.out.println("2. To decompose a program into several small subroutines.");
+        System.out.println("3. To determine the execution time of a program.");
+        System.out.println("4. To interrupt the execution of a program.");
+
+        // Створення об'єкту Scanner для зчитування введення користувача
+        Scanner scanner = new Scanner(System.in);
+
+        // Правильна відповідь
+        int correctAnswer = 2;
+
+        // Цикл для перевірки відповідей користувача
+        while (true) {
+            // Зчитування відповіді користувача
+            int userAnswer = scanner.nextInt();
+
+            // Перевірка відповіді
+            if (userAnswer == correctAnswer) {
+                System.out.println("Congratulations! That's correct.");
+                break;  // Завершення циклу, якщо відповідь правильна
+            } else {
+                System.out.println("Sorry, that's incorrect. Please try again.");
+            }
+        }
+
+        // Виведення повідомлення про завершення програми
+        System.out.println("Goodbye, have a nice day!");
+    }
+
     public static void main(String[] args) {
         // Створення екземпляру класу ChatBot з ім'ям "MyBot"
         ChatBot myBot = new ChatBot("MyBot");
 
-        // Виведення привітання та вгадування віку та підрахунок до числа
+        // Виведення привітання та вгадування віку та підрахунок до числа та проведення тесту
         myBot.printGreeting();
     }
 }
