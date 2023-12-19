@@ -8,42 +8,77 @@ public class Hangman {
         System.out.println("\nWelcome to Hangman! Can you guess the word and survive?");
         System.out.println("Stay tuned for the game release!");
 
-        // Етап 4: Додана підказка
-        playHintHangman();
+        // Етап 5: Гра з вгадуванням літер та обмеженням кількості спроб
+        playHangmanWithAttempts();
     }
 
-    public static void playHintHangman() {
+    public static void playHangmanWithAttempts() {
         String[] words = {"python", "java", "javascript", "kotlin"};
         String secretWord = getRandomWord(words);
-        String guessedWord = getHint(secretWord);
+        char[] guessedWordArray = new char[secretWord.length()];
+        for (int i = 0; i < guessedWordArray.length; i++) {
+            guessedWordArray[i] = '-';
+        }
 
+        int attemptsLeft = 8;
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("\nGuess the word " + guessedWord + ": > ");
-        String userGuess = scanner.nextLine().toLowerCase();
+        printGuessedWord(guessedWordArray);
 
-        if (userGuess.equals(secretWord)) {
-            System.out.println("You survived!");
-        } else {
-            System.out.println("You lost! The correct word was: " + secretWord);
-        }
-    }
+        while (attemptsLeft > 0) {
+            System.out.print("Input a letter: > ");
+            char userGuess = scanner.next().toLowerCase().charAt(0);
 
-    private static String getHint(String word) {
-        StringBuilder hint = new StringBuilder();
-        for (int i = 0; i < word.length(); i++) {
-            if (i < 2) {
-                hint.append(word.charAt(i));
+            if (containsLetter(secretWord, userGuess)) {
+                updateGuessedWord(secretWord, guessedWordArray, userGuess);
+                printGuessedWord(guessedWordArray);
+                if (!containsDash(guessedWordArray)) {
+                    System.out.println("Congratulations! You survived!");
+                    return;
+                }
             } else {
-                hint.append("-");
+                attemptsLeft--;
+                System.out.println("That letter doesn't appear in the word");
+                printGuessedWord(guessedWordArray);
+                System.out.println("Attempts left: " + attemptsLeft);
             }
         }
-        return hint.toString();
+
+        System.out.println("Thanks for playing!");
+        System.out.println("The correct word was: " + secretWord);
     }
 
     private static String getRandomWord(String[] words) {
         Random random = new Random();
         int randomIndex = random.nextInt(words.length);
         return words[randomIndex];
+    }
+
+    private static boolean containsLetter(String word, char letter) {
+        return word.indexOf(letter) != -1;
+    }
+
+    private static void updateGuessedWord(String word, char[] guessedWordArray, char letter) {
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == letter) {
+                guessedWordArray[i] = letter;
+            }
+        }
+    }
+
+    private static void printGuessedWord(char[] guessedWordArray) {
+        for (char c : guessedWordArray) {
+            System.out.print(c);
+        }
+        System.out.println();
+    }
+
+    private static boolean containsDash(char[] guessedWordArray) {
+        for (char c : guessedWordArray) {
+            if (c == '-') {
+                return true;
+            }
+        }
+        return false;
     }
 }
