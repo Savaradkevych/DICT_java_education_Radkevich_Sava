@@ -29,9 +29,36 @@ public class CoffeeMachine {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        printStatus();
-        chooseAction();
+        runCoffeeMachine();
         scanner.close();
+    }
+
+    public static void runCoffeeMachine() {
+        while (true) {
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
+            String action = scanner.next();
+
+            switch (action) {
+                case "buy":
+                    buyCoffee();
+                    break;
+                case "fill":
+                    fillMachine();
+                    break;
+                case "take":
+                    takeMoney();
+                    break;
+                case "remaining":
+                    printStatus();
+                    break;
+                case "exit":
+                    System.out.println("Exiting coffee machine. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid action. Please choose buy, fill, take, remaining, or exit.");
+                    break;
+            }
+        }
     }
 
     public static void printStatus() {
@@ -43,33 +70,13 @@ public class CoffeeMachine {
         System.out.println(money + " of money");
     }
 
-    public static void chooseAction() {
-        System.out.println("\nWrite action (buy, fill, take):");
-        String action = scanner.next();
-
-        switch (action) {
-            case "buy":
-                buyCoffee();
-                break;
-            case "fill":
-                fillMachine();
-                break;
-            case "take":
-                takeMoney();
-                break;
-            default:
-                System.out.println("Invalid action. Please choose buy, fill, or take.");
-                break;
-        }
-    }
-
     public static void buyCoffee() {
-        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back – to main menu:");
         int choice = scanner.nextInt();
 
         switch (choice) {
             case 1:
-                makeCoffee(WATER_PER_CUP_ESPRESSO, MILK_PER_CUP_LATTE, COFFEE_BEANS_PER_CUP_LATTE, COST_LATTE);
+                makeCoffee(WATER_PER_CUP_ESPRESSO, 0, COFFEE_BEANS_PER_CUP_ESPRESSO, COST_ESPRESSO);
                 break;
             case 2:
                 makeCoffee(WATER_PER_CUP_LATTE, MILK_PER_CUP_LATTE, COFFEE_BEANS_PER_CUP_LATTE, COST_LATTE);
@@ -77,8 +84,11 @@ public class CoffeeMachine {
             case 3:
                 makeCoffee(WATER_PER_CUP_CAPPUCINO, MILK_PER_CUP_CAPPUCINO, COFFEE_BEANS_PER_CUP_CAPPUCINO, COST_CAPPUCINO);
                 break;
+            case 4:
+                // back to main menu
+                break;
             default:
-                System.out.println("Invalid choice. Please choose 1, 2, or 3.");
+                System.out.println("Invalid choice. Please choose 1, 2, 3, or 4.");
                 break;
         }
     }
@@ -96,7 +106,6 @@ public class CoffeeMachine {
         }
 
         printStatus();
-        chooseAction();
     }
 
     public static void fillMachine() {
@@ -109,7 +118,7 @@ public class CoffeeMachine {
         System.out.println("Write how many grams of coffee beans you want to add:");
         int addedCoffeeBeans = scanner.nextInt();
 
-        System.out.println("Write how many disposable coffee cups you want to add:");
+        System.out.println("Write how many disposable cups of coffee you want to add:");
         int addedCups = scanner.nextInt();
 
         water += addedWater;
@@ -118,7 +127,6 @@ public class CoffeeMachine {
         disposableCups += addedCups;
 
         printStatus();
-        chooseAction();
     }
 
     public static void takeMoney() {
@@ -126,6 +134,5 @@ public class CoffeeMachine {
         money = 0;
 
         printStatus();
-        chooseAction();
     }
 }
