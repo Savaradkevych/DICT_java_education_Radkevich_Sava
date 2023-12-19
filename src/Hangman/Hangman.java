@@ -1,5 +1,7 @@
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Hangman {
     public static void main(String[] args) {
@@ -8,11 +10,11 @@ public class Hangman {
         System.out.println("\nWelcome to Hangman! Can you guess the word and survive?");
         System.out.println("Stay tuned for the game release!");
 
-        // Етап 6: Гра з вгадуванням літер та обмеженням кількості помилок
-        playHangmanWithLimitedMistakes();
+        // Етап 7: Гра з вгадуванням літер, обмеженням кількості помилок і валідацією вводу
+        playHangmanWithValidation();
     }
 
-    public static void playHangmanWithLimitedMistakes() {
+    public static void playHangmanWithValidation() {
         String[] words = {"python", "java", "javascript", "kotlin"};
         String secretWord = getRandomWord(words);
         char[] guessedWordArray = new char[secretWord.length()];
@@ -21,19 +23,36 @@ public class Hangman {
         }
 
         int remainingAttempts = 8;
+        Set<Character> guessedLetters = new HashSet<>();
         Scanner scanner = new Scanner(System.in);
 
         while (remainingAttempts > 0) {
             printGuessedWord(guessedWordArray);
             System.out.print("Input a letter: > ");
-            char userGuess = scanner.next().toLowerCase().charAt(0);
+            String userInput = scanner.next().toLowerCase();
+
+            if (userInput.length() != 1) {
+                System.out.println("You should input a single letter");
+                continue;
+            }
+
+            char userGuess = userInput.charAt(0);
+
+            if (!Character.isLowerCase(userGuess)) {
+                System.out.println("Please enter a lowercase English letter");
+                continue;
+            }
+
+            if (guessedLetters.contains(userGuess)) {
+                System.out.println("You've already guessed this letter");
+                continue;
+            }
+
+            guessedLetters.add(userGuess);
 
             if (!containsLetter(secretWord, userGuess)) {
                 remainingAttempts--;
                 System.out.println("That letter doesn't appear in the word");
-            } else if (containsLetter(guessedWordArray, userGuess)) {
-                remainingAttempts--;
-                System.out.println("No improvements");
             } else {
                 updateGuessedWord(secretWord, guessedWordArray, userGuess);
                 printGuessedWord(guessedWordArray);
@@ -59,15 +78,6 @@ public class Hangman {
 
     private static boolean containsLetter(String word, char letter) {
         return word.indexOf(letter) != -1;
-    }
-
-    private static boolean containsLetter(char[] guessedWordArray, char letter) {
-        for (char c : guessedWordArray) {
-            if (c == letter) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static void updateGuessedWord(String word, char[] guessedWordArray, char letter) {
