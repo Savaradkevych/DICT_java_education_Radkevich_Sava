@@ -17,6 +17,7 @@ public class ChatBot {
         System.out.println("I was created in " + birthYear + ".");
         askForName();
         guessAge();
+        countToNumber();
     }
 
     // Метод для запитання імені користувача
@@ -53,11 +54,27 @@ public class ChatBot {
         System.out.println("Your age is " + userAge + "; that's a good time to start programming!");
     }
 
+    // Метод для підрахунку до введеного користувачем числа
+    private void countToNumber() {
+        System.out.println("Now I will prove to you that I can count to any number you want!");
+
+        // Створення об'єкту Scanner для зчитування введення користувача
+        Scanner scanner = new Scanner(System.in);
+
+        // Зчитування числа від користувача
+        int userNumber = scanner.nextInt();
+
+        // Виведення чисел від 1 до введеного користувачем числа зі знаками оклику
+        for (int i = 1; i <= userNumber; i++) {
+            System.out.println(i + "!");
+        }
+    }
+
     public static void main(String[] args) {
         // Створення екземпляру класу ChatBot з ім'ям "MyBot"
         ChatBot myBot = new ChatBot("MyBot");
 
-        // Виведення привітання та вгадування віку
+        // Виведення привітання та вгадування віку та підрахунок до числа
         myBot.printGreeting();
     }
 }
