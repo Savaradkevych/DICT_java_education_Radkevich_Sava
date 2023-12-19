@@ -23,6 +23,9 @@ public class MatrixProcessing {
                 case 4:
                     transposeMatrix(scanner);
                     break;
+                case 5:
+                    calculateDeterminant(scanner);
+                    break;
                 case 0:
                     System.out.println("Exiting the program.");
                     break;
@@ -37,6 +40,7 @@ public class MatrixProcessing {
         System.out.println("2. Multiply matrix by a constant");
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
+        System.out.println("5. Calculate a determinant");
         System.out.println("0. Exit");
     }
 
@@ -152,6 +156,21 @@ public class MatrixProcessing {
         printMatrix(resultMatrix);
     }
 
+    private static void calculateDeterminant(Scanner scanner) {
+        System.out.println("Enter matrix size: > ");
+        int[][] matrix = readMatrix(scanner);
+
+        System.out.println("Enter matrix:");
+        printMatrix(matrix);
+
+        if (matrix.length == matrix[0].length) {
+            int determinant = calculateDeterminant(matrix);
+            System.out.println("The result is: " + determinant);
+        } else {
+            System.out.println("The operation cannot be performed. The matrix is not square.");
+        }
+    }
+
     private static int[][] addMatrices(int[][] matrixA, int[][] matrixB) {
         int rows = matrixA.length;
         int cols = matrixA[0].length;
@@ -251,6 +270,48 @@ public class MatrixProcessing {
         }
 
         return resultMatrix;
+    }
+
+    private static int calculateDeterminant(int[][] matrix) {
+        int size = matrix.length;
+
+        if (size == 1) {
+            return matrix[0][0];
+        }
+
+        if (size == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        }
+
+        int determinant = 0;
+
+        for (int i = 0; i < size; i++) {
+            determinant += matrix[0][i] * getCofactor(matrix, 0, i);
+        }
+
+        return determinant;
+    }
+
+    private static int getCofactor(int[][] matrix, int row, int col) {
+        int size = matrix.length;
+        int[][] minorMatrix = new int[size - 1][size - 1];
+        int minorRow = 0;
+        int minorCol = 0;
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i != row && j != col) {
+                    minorMatrix[minorRow][minorCol++] = matrix[i][j];
+
+                    if (minorCol == size - 1) {
+                        minorRow++;
+                        minorCol = 0;
+                    }
+                }
+            }
+        }
+
+        return (row + col) % 2 == 0 ? calculateDeterminant(minorMatrix) : -calculateDeterminant(minorMatrix);
     }
 
     private static void printMatrix(int[][] matrix) {
